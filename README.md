@@ -1,8 +1,6 @@
-# ActionTracker
+# Action Tracker
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/action_tracker`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Action and event trackers made easy. With this gem you can track your user actions without adding unnecessary code in your controllers.
 
 ## Installation
 
@@ -20,9 +18,64 @@ Or install it yourself as:
 
     $ gem install action_tracker
 
-## Usage
+<!-- ## Usage
 
-TODO: Write usage instructions here
+To use Action Tracker is easy, is needed to create a Tracker to any Controller to track. The structure of the files is simple.
+
+To specify the tracker tool you want to use, you need to create a initializer and set the wanted tools.
+
+```ruby
+# config/initializers/action_tracker.rb
+ActionTracker::Settings.configuration do |config|
+  config.use_tool :mix_panel
+  config.use_tool :dito
+  config.use_tool :custom_tool
+end
+``` -->
+
+The Tracker file structure must follow the controllers names and actions
+
+### Simple usage
+
+Simple add the wanted actions to track, with same name as the controller.
+
+```ruby
+# app/trackers/users_tracker.rb
+class UsersTracker < ActionTracker::Base
+  # This file tracks UsersController
+
+  def index; end
+  def show; end
+  def create; end
+end
+```
+
+### Advanced usage
+
+The parameters that will be send to Tracker tools can be easily customized. As the example above, is necessary to create the action, same as controllers and the return will be send to tracker tool.
+
+```ruby
+# app/trackers/posts_tracker.rb
+class PostsTracker < ActionTracker::Base
+  # This file tracks PostsController
+
+  def show
+    {
+      name: 'post-was-viewed',
+      data: {
+        post_id: @post.id,
+        tags: @post.tags
+      }
+    }
+  end
+end
+```
+
+#### Options
+
+| Name | Description | Default |
+|--|--|--|--|
+|*name*| The name of the tracked event.  | The controller action name. Eg.: 'users#index'|
 
 ## Development
 
@@ -32,10 +85,9 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/action_tracker.
+Bug reports and pull requests are welcome on GitHub at https://github.com/appprova/action_tracker.
 
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
