@@ -25,12 +25,7 @@ module ActionTracker
       private
 
       def namespace
-        if self.class.name.deconstantize.empty?
-          ""
-        else
-          #self.class.name.deconstantize.try(:+, '::')
-          self.class.name.deconstantize << "::"
-        end
+        self.class.name.deconstantize.try(:+, '::')
       end
     end
   end
