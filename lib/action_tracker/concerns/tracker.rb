@@ -1,3 +1,4 @@
+require 'active_support'
 require 'rails3_before_render'
 
 module ActionTracker
