@@ -12,25 +12,24 @@ module ActionTracker
       end
 
       def track_event
-        user = current_user || current_teacher
-        begin
-          obj = Object.const_get("#{namespace}#{controller_name.camelize}Tracker", false).new
-          obj.user, obj.params = user, params
-          @tracker_params = obj.method(action_name).call if obj.respond_to? action_name
-        rescue NameError => e
-          # Significa que não tem tracker definido para esta action
-        end
+        tracker_user = current_user || current_teacher
+        tracker_class = "#{namespace}#{controller_name.camelize}Tracker"
+        @tracker_params = tracker_params(tracker_class, tracker_user)
       end
 
       private
 
-      def namespace
-        if self.class.name.deconstantize.empty?
-          ""
-        else
-          #self.class.name.deconstantize.try(:+, '::')
-          self.class.name.deconstantize << "::"
+      def tracker_params(tracker_class, tracker_user)
+        if Object.const_defined? tracker_class
+          tracker = Object.const_get(tracker_class, false).new
+          tracker.user = tracker_user
+          tracker.params = params
+          tracker.method(action_name).call if tracker.respond_to? action_name
         end
+      end
+
+      def namespace
+        self.class.name.deconstantize.try(:+, '::')
       end
     end
   end
