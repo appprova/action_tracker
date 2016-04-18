@@ -22,8 +22,11 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'rails3_before_render', '0.2.0'
   spec.add_dependency 'activesupport', '~> 3.2'
 
-  spec.add_development_dependency "bundler", "~> 1.11"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec-rails", "~> 3.0"
+  spec.add_development_dependency 'bundler', '~> 1.11'
+  spec.add_development_dependency 'rake', '~> 10.0'
+  spec.add_development_dependency 'rspec-rails', '~> 3.0'
+  spec.add_development_dependency 'rspec-mocks', '~> 3.3'
   spec.add_development_dependency 'rails', '~> 3.2'
+  spec.add_development_dependency 'guard', '~> 2.13.0'
+  spec.add_development_dependency 'guard-rspec', '~> 4.6.4'
 end
