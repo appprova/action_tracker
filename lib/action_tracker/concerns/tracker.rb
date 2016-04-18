@@ -20,12 +20,15 @@ module ActionTracker
       private
 
       def tracker_params(tracker_class, tracker_user)
-        if Object.const_defined? tracker_class
+        begin
           tracker = Object.const_get(tracker_class, false).new
           tracker.user = tracker_user
           tracker.params = params
-          tracker.method(action_name).call if tracker.respond_to? action_name
+          output = tracker.method(action_name).call if tracker.respond_to? action_name
+        rescue NameError
+          output = ''
         end
+        output
       end
 
       def namespace
