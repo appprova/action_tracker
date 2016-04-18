@@ -1,3 +1,5 @@
+<a href="https://codeclimate.com/github/appprova/action_tracker"><img src="https://codeclimate.com/github/appprova/action_tracker/badges/gpa.svg" /></a>
+
 # Action Tracker
 
 Action and event trackers made easy. With this gem you can track your user actions without adding unnecessary code in your controllers.

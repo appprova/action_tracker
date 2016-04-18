@@ -7,5 +7,6 @@ require 'action_tracker/base'
 module ActionTracker
   if defined?(Rails)
     require 'action_tracker/engine'
+    ActiveSupport.on_load(:action_controller) { include ActionTracker::Concerns::Tracker }
   end
 end

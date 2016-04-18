@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["andre.taiar@appprova.com.br", "joaogabriel@appprova.com.br"]
 
   spec.summary       = %q{Easy way to track actions in your application.}
-  spec.description   = %q{Easy way to track actions in your application without adding unnecessary code to your application.}
+  spec.description   = %q{Easy way to track actions in your application without adding unnecessary code to your controllers.}
   spec.homepage      = "http://coders.appprova.com.br/"
   spec.license       = "MIT"
 
@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'rails3_before_render', '0.2.0'
   spec.add_dependency 'activesupport', '~> 3.2'
-  spec.add_dependency 'actionpack', '~> 3.2'
 
   spec.add_development_dependency "bundler", "~> 1.11"
   spec.add_development_dependency "rake", "~> 10.0"
