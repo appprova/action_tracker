@@ -12,23 +12,28 @@ module ActionTracker
       end
 
       def track_event
-        tracker_user = current_user || current_teacher
-        tracker_class = "#{namespace}#{controller_name.camelize}Tracker"
-        @tracker_params = tracker_params(tracker_class, tracker_user)
+        @tracker_params = tracker_params
       end
 
       private
 
-      def tracker_params(tracker_class, tracker_user)
-        begin
-          tracker = Object.const_get(tracker_class, false).new
-          tracker.user = tracker_user
-          tracker.params = params
-          output = tracker.method(action_name).call if tracker.respond_to? action_name
-        rescue NameError
-          output = ''
-        end
-        output
+      def tracker_klass
+        @tracker_klass ||= "#{namespace}#{controller_name.camelize}Tracker"
+      end
+
+      def resource
+        @resource ||= current_user || current_teacher
+      end
+
+      def tracker
+        @tracker ||= Object.const_get(tracker_klass, false).new(resource, params)
+      rescue NameError
+        nil
+      end
+
+      def tracker_params
+        return nil unless tracker && !tracker.respond_to?(action_name)
+        tracker.method(action_name).call
       end
 
       def namespace
