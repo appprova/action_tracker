@@ -16,7 +16,7 @@ module ActionTracker
         tracker_class = "#{namespace}#{controller_name.camelize}Tracker"
         session[:action_tracker] ||= []
         output = tracker_params(tracker_class, tracker_user)
-        session[:action_tracker] << output unless output.nil? || output.empty?
+        session[:action_tracker] << output unless output.blank?
       end
 
       private
