@@ -3,7 +3,9 @@ module ActionTracker
     # nodoc
     module Render
       def track_event
-        @tracker_params unless @tracker_params.nil?
+        output = session[:action_tracker].to_s
+        session[:action_tracker] = nil
+        output
       end
     end
   end

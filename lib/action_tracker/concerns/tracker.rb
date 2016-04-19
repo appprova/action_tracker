@@ -12,9 +12,11 @@ module ActionTracker
       end
 
       def track_event
-        tracker_user = current_user || current_teacher
+        tracker_user = current_user || current_teacher || resource
         tracker_class = "#{namespace}#{controller_name.camelize}Tracker"
-        @tracker_params = tracker_params(tracker_class, tracker_user)
+        session[:action_tracker] ||= []
+        output = tracker_params(tracker_class, tracker_user)
+        session[:action_tracker] << output unless output.nil? || output.empty?
       end
 
       private
