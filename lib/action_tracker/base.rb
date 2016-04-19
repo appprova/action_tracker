@@ -7,5 +7,9 @@ module ActionTracker
       @resource = resource
       @params = params
     end
+
+    def user
+      @resource
+    end
   end
 end

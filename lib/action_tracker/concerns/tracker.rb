@@ -22,18 +22,21 @@ module ActionTracker
       end
 
       def resource
-        @resource ||= current_user || current_teacher
+        @resource ||= method(Devise.mappings.keys
+                            .map { |resource| "current_#{resource}" }
+                            .select { |resource_method| !method(resource_method).call.nil? }
+                            .first).call
       end
 
-      def tracker
-        @tracker ||= Object.const_get(tracker_klass, false).new(resource, params)
+      def tracker_instance
+        @tracker_instance ||= Object.const_get(tracker_klass, false).new(resource, params)
       rescue NameError
         nil
       end
 
       def tracker_params
-        return nil unless tracker && !tracker.respond_to?(action_name)
-        tracker.method(action_name).call
+        return nil unless tracker_instance && tracker_instance.respond_to?(action_name)
+        tracker_instance.method(action_name).call
       end
 
       def namespace
