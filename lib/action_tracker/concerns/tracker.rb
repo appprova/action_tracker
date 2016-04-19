@@ -22,10 +22,13 @@ module ActionTracker
       end
 
       def resource
-        @resource ||= method(Devise.mappings.keys
-                            .map { |resource| "current_#{resource}" }
-                            .select { |resource_method| !method(resource_method).call.nil? }
-                            .first).call
+        @resource ||= method(find_resource).call
+      end
+
+      def find_resource
+        Devise.mappings.keys.map { |resource| "current_#{resource}" }
+              .select { |resource_method| !method(resource_method).call.nil? }
+              .first
       end
 
       def tracker_instance
