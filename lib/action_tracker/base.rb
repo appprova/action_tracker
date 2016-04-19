@@ -1,7 +1,7 @@
 module ActionTracker
   # nodoc
   class Base
-    attr_accessor :params, :resource
+    attr_reader :params, :resource
 
     def initialize(resource, params)
       @resource = resource
