@@ -14,8 +14,7 @@ module ActionTracker
 
       def track_event
         session[:action_tracker] ||= []
-        output = tracker_params
-        session[:action_tracker] << output unless output.blank?
+        session[:action_tracker] << tracker_params unless tracker_params.blank?
       end
 
       private
@@ -37,14 +36,13 @@ module ActionTracker
       end
 
       def tracker_instance
-        @tracker_instance ||= Object.const_get(tracker_klass, false).new(resource, params)
+        @tracker_instance ||= Object.const_get(tracker_klass, false).new(resource, self)
       rescue NameError
         nil
       end
 
       def tracker_params
-        return nil unless tracker_exists?
-        tracker_instance.method(action_name).call
+        @tracker_params ||= tracker_exists? ? tracker_instance.method(action_name).call : nil
       end
 
       def tracker_exists?
