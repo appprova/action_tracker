@@ -1,3 +1,4 @@
+require 'active_support'
 require 'rails3_before_render'
 
 module ActionTracker
@@ -12,25 +13,42 @@ module ActionTracker
       end
 
       def track_event
-        tracker_user = current_user || current_teacher || resource
-        tracker_class = "#{namespace}#{controller_name.camelize}Tracker"
         session[:action_tracker] ||= []
-        output = tracker_params(tracker_class, tracker_user)
+        output = tracker_params
         session[:action_tracker] << output unless output.blank?
       end
 
       private
 
-      def tracker_params(tracker_class, tracker_user)
-        begin
-          tracker = Object.const_get(tracker_class, false).new
-          tracker.user = tracker_user
-          tracker.params = params
-          output = tracker.method(action_name).call if tracker.respond_to? action_name
-        rescue NameError
-          output = ''
-        end
-        output
+      def tracker_klass
+        @tracker_klass ||= "#{namespace}#{controller_name.camelize}Tracker"
+      end
+
+      def resource
+        @resource ||= method(find_resource).call if find_resource
+      end
+
+      def find_resource
+        @resource_method ||= Devise.mappings.keys.map { |resource| "current_#{resource}" }
+                                   .select { |method_name| !method(method_name).call.nil? }
+                                   .first
+      rescue NameError
+        nil
+      end
+
+      def tracker_instance
+        @tracker_instance ||= Object.const_get(tracker_klass, false).new(resource, params)
+      rescue NameError
+        nil
+      end
+
+      def tracker_params
+        return nil unless tracker_exists?
+        tracker_instance.method(action_name).call
+      end
+
+      def tracker_exists?
+        tracker_instance && tracker_instance.respond_to?(action_name)
       end
 
       def namespace
