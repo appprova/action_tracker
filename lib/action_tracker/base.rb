@@ -3,7 +3,7 @@ module ActionTracker
   class Base
     attr_reader :params, :resource
 
-    def initialize(resource, params)
+    def initialize(resource, params = {})
       @resource = resource
       @params = params
     end
