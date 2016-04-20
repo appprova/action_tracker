@@ -38,11 +38,11 @@ module ActionTracker
       end
 
       def tracker_params
-        return nil unless tracker_exists
+        return nil unless tracker_exists?
         tracker_instance.method(action_name).call
       end
 
-      def tracker_exists
+      def tracker_exists?
         tracker_instance && tracker_instance.respond_to?(action_name)
       end
 
