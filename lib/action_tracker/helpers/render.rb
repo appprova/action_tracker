@@ -4,7 +4,7 @@ module ActionTracker
     module Render
       def track_event
         return unless session[:action_tracker].present?
-        output = session[:action_tracker].flatten.to_s
+        output = session[:action_tracker].flatten
         session[:action_tracker] = nil
         output
       end
