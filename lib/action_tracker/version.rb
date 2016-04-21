@@ -1,3 +1,3 @@
 module ActionTracker
-  VERSION = "0.1.0.6"
+  VERSION = '0.1.1'
 end
