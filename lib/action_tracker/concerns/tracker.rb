@@ -1,5 +1,4 @@
 require 'active_support'
-require 'rails3_before_render'
 
 module ActionTracker
   module Concerns
@@ -9,7 +8,7 @@ module ActionTracker
 
       included do
         helper ActionTracker::Helpers::Render
-        before_render :track_event
+        after_filter :track_event
       end
 
       def track_event
