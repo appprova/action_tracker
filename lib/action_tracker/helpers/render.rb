@@ -3,6 +3,7 @@ module ActionTracker
     # nodoc
     module Render
       def track_event
+        return unless session[:action_tracker].present?
         output = session[:action_tracker].flatten.to_s
         session[:action_tracker] = nil
         output
