@@ -34,8 +34,8 @@ describe ActionTracker::Concerns::Tracker do
 
   it 'clear stacks sequence of trackers when the helper is called' do
     trigger_two_trackers
-    allow(@helper).to receive(:session).and_return(@fake_session)
     expect(kontroller_klass.session[:action_tracker].size).to eq(2)
+    allow(@helper).to receive(:session).and_return(@fake_session)
     result = @helper.track_event
     expect(@fake_session[:action_tracker]).to be_nil
     expect(result.size).to eq(2)
