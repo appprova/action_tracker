@@ -1,12 +1,4 @@
 require 'spec_helper'
-require 'byebug'
-require 'application_test_controller'
-
-class ApplicationTestTracker < ActionTracker::Base
-  def test_action
-    'Here comes the test'
-  end
-end
 
 describe ActionTracker::Concerns::Tracker do
 
