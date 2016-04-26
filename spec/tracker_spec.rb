@@ -14,13 +14,13 @@ describe ActionTracker::Concerns::Tracker do
   let(:second_kontroller_klass) { ApplicationTestController.new { include ActionTracker::Concerns::Tracker } }
 
   it 'track an action' do
-    allow_any_instance_of(ApplicationTestController).to receive(:action_name).and_return('action_test')
+    allow(kontroller_klass).to receive(:action_name).and_return('action_test')
     kontroller_klass.track_event
     expect(kontroller_klass.session[:action_tracker]).to eq(['Here comes the test'])
   end
 
   it 'return null if class does not have tracker' do
-    allow_any_instance_of(ApplicationTestController).to receive(:action_name).and_return('some_other_test_action')
+    allow(kontroller_klass).to receive(:action_name).and_return('some_other_test_action')
     kontroller_klass.track_event
     expect(kontroller_klass.session[:action_tracker]).to be_empty
   end
@@ -43,9 +43,9 @@ describe ActionTracker::Concerns::Tracker do
   end
 
   def trigger_two_trackers
-    allow_any_instance_of(ApplicationTestController).to receive(:action_name).and_return('action_test')
+    allow(kontroller_klass).to receive(:action_name).and_return('action_test')
+    allow(second_kontroller_klass).to receive(:action_name).and_return('another_action_test')
     kontroller_klass.track_event
-    allow_any_instance_of(ApplicationTestController).to receive(:action_name).and_return('another_action_test')
     second_kontroller_klass.track_event
   end
 
