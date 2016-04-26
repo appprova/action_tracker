@@ -35,7 +35,7 @@ describe ActionTracker::Concerns::Tracker do
     result = @helper.track_event
     expect(@fake_session[:action_tracker]).to be_nil
     expect(result.size).to eq(2)
-    expect(result).to include('Here comes the test', action: 'Here comes the object test')
+    expect(result).to match(['Here comes the test', action: 'Here comes the object test'])
   end
 
   def trigger_trackers(event_list)
