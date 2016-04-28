@@ -49,7 +49,7 @@ describe ActionTracker::Concerns::Tracker do
     event_list.size.times do |n|
       @event_list[n] = ApplicationTestController.new { include ActionTracker::Concerns::Tracker  }
       allow(@event_list[n]).to receive(:action_name).and_return(event_list[n])
-      @event_list[n].track_event
+      @event_list[n].instance_eval{ track_event }
     end
   end
 
