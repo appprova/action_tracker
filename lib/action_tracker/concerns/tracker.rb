@@ -11,6 +11,11 @@ module ActionTracker
         after_filter :track_event
       end
 
+      def render(*args)
+        track_event
+        super
+      end
+
       def track_event
         session[:action_tracker] ||= []
         session[:action_tracker] << tracker_params unless tracker_params.blank?
