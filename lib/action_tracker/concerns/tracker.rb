@@ -8,7 +8,6 @@ module ActionTracker
 
       included do
         helper ActionTracker::Helpers::Render
-        after_filter :track_event
       end
 
       def render(*args)
