@@ -8,19 +8,30 @@ module ActionTracker
 
       included do
         helper ActionTracker::Helpers::Render
+        before_filter :initialize_session
+        after_filter :conditional_track_event
       end
 
       def render(*args)
         track_event
+        session[:action_tracked] = true
         super
+      end
+
+      private
+
+      def conditional_track_event
+        track_event unless session[:action_tracked]
+      end
+
+      def initialize_session
+        session[:action_tracked] = false
       end
 
       def track_event
         session[:action_tracker] ||= []
         session[:action_tracker] << tracker_params unless tracker_params.blank?
       end
-
-      private
 
       def tracker_klass
         @tracker_klass ||= "#{namespace}#{controller_name.camelize}Tracker"
