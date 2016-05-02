@@ -8,7 +8,6 @@ describe ActionTracker::Concerns::Tracker do
     @fake_session = {}
 
     allow_any_instance_of(ApplicationTestController).to receive(:session).and_return(@fake_session)
-    allow(ActionTracker).to receive_message_chain([:configuration, :track_events]).and_return(true)
     @helper = Object.new.extend ActionTracker::Helpers::Render
   end
 

@@ -2,10 +2,13 @@
 module ActionTracker
   class << self
     attr_accessor :configuration
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
   end
 
   def self.configure
-    self.configuration ||= Configuration.new
     yield(configuration)
   end
 
