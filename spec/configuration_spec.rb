@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ActionTracker::Configuration do
   describe '#track_events flag' do
     it 'default value is true' do
-      ActionTracker::Configuration.new.track_events = true
+      expect(ActionTracker::Configuration.new.track_events).to eq(true)
     end
   end
 
