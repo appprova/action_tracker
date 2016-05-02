@@ -29,6 +29,7 @@ module ActionTracker
       end
 
       def track_event
+        return unless ActionTracker.configuration.track_events
         session[:action_tracker] ||= []
         session[:action_tracker] << tracker_params unless tracker_params.blank?
       end
