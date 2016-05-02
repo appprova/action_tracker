@@ -1,5 +1,6 @@
 <a href="https://codeclimate.com/github/appprova/action_tracker"><img src="https://codeclimate.com/github/appprova/action_tracker/badges/gpa.svg" /></a>
 [![Build Status](https://travis-ci.org/appprova/action_tracker.svg?branch=develop)](https://travis-ci.org/appprova/action_tracker)
+[ ![Codeship Status for appprova/action_tracker](https://codeship.com/projects/a038f7b0-f2ce-0133-3399-42c612817579/status?branch=master)](https://codeship.com/projects/149594)
 
 # Action Tracker
 
