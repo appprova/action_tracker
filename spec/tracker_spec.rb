@@ -3,12 +3,12 @@ require 'spec_helper'
 include ActionTracker::Helpers::Render
 
 describe ActionTracker::Concerns::Tracker do
-
   before(:each) do
     @event_list = []
     @fake_session = {}
 
     allow_any_instance_of(ApplicationTestController).to receive(:session).and_return(@fake_session)
+    allow(ActionTracker).to receive_message_chain([:configuration, :track_events]).and_return(true)
     @helper = Object.new.extend ActionTracker::Helpers::Render
   end
 
@@ -25,7 +25,7 @@ describe ActionTracker::Concerns::Tracker do
   end
 
   it 'stacks sequence of trackers' do
-    trigger_trackers(['action_test', 'another_action_test'])
+    trigger_trackers(%w(action_test another_action_test))
 
     expect(@fake_session[:action_tracker].size).to eq(2)
     expect(@fake_session[:action_tracker].first).to eq('Here comes the test')
@@ -33,7 +33,7 @@ describe ActionTracker::Concerns::Tracker do
   end
 
   it 'clear stacks sequence of trackers when the helper is called' do
-    trigger_trackers(['action_test', 'another_action_test'])
+    trigger_trackers(%w(action_test another_action_test))
 
     expect(@fake_session[:action_tracker].size).to eq(2)
 
@@ -47,10 +47,9 @@ describe ActionTracker::Concerns::Tracker do
 
   def trigger_trackers(event_list)
     event_list.size.times do |n|
-      @event_list[n] = ApplicationTestController.new { include ActionTracker::Concerns::Tracker  }
+      @event_list[n] = ApplicationTestController.new { include ActionTracker::Concerns::Tracker }
       allow(@event_list[n]).to receive(:action_name).and_return(event_list[n])
-      @event_list[n].instance_eval{ track_event }
+      @event_list[n].instance_eval { track_event }
     end
   end
-
 end
