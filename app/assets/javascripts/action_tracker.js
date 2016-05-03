@@ -1,6 +1,4 @@
 
-"use strict";
-
 var ActionTracker = function () {
 
   var storage,
