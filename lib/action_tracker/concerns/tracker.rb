@@ -13,7 +13,7 @@ module ActionTracker
       end
 
       def render(*args)
-        track_event
+        conditional_track_event
         session[:action_tracked] = true
         super
       end
@@ -32,6 +32,14 @@ module ActionTracker
         return unless ActionTracker.configuration.track_events
         session[:action_tracker] ||= []
         session[:action_tracker] << tracker_params unless tracker_params.blank?
+      end
+
+      def digest
+        return unless session[:action_tracker].present?
+        session[:action_tracked] = true
+        output = session[:action_tracker].flatten
+        session[:action_tracker] = nil
+        output
       end
 
       def tracker_klass
