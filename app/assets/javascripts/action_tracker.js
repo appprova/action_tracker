@@ -103,7 +103,7 @@ var ActionTracker = function () {
     };
   };
 
-  var publico = {
+  var public = {
     Tracker: Tracker,
     User: User,
     Storage: Storage,
@@ -114,5 +114,5 @@ var ActionTracker = function () {
 
   constructor();
 
-  return publico;
+  return public;
 }();
