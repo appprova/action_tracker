@@ -20,9 +20,8 @@ var ActionTracker = function () {
 
   function process() {
     while(typeof storage.getFirst() !== 'undefined') {
-      var tracker = new Tracker(storage.getFirst());
+      var tracker = new Tracker(storage.dequeue());
       tracker.send();
-      storage.dequeue();
     }
   }
 
