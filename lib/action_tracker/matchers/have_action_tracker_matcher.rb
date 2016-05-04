@@ -1,7 +1,7 @@
 RSpec::Matchers.define :have_action_tracker do
   match do |actual|
-    actual.class.included_modules.include? ActionTracker::Concerns::Tracker
-    filter_exists?(controller, :before, :initialize_session)
+    actual.class.included_modules.include?(ActionTracker::Concerns::Tracker) &&
+    filter_exists?(controller, :before, :initialize_session) &&
     filter_exists?(controller, :after, :conditional_track_event)
   end
 
