@@ -8,11 +8,11 @@ RSpec::Matchers.define :track do |expected|
   end
 
   failure_message do |actual|
-    "expected that #{actual} track #{expected} action, but it didn't."
+    "expected #{actual} to track #{expected} action, but it didn't."
   end
 
   failure_message_when_negated do |actual|
-    "expected that #{actual} doesn't track #{expected} action, but it did."
+    "expected #{actual} not to track #{expected} action, but it did."
   end
 
 end
