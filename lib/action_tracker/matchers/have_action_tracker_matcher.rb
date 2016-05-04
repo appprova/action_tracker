@@ -1,17 +1,29 @@
 RSpec::Matchers.define :have_action_tracker do
   match do |actual|
-    actual.respond_to? 'track_event'
+    actual.class.included_modules.include? ActionTracker::Concerns::Tracker
+    filter_exists?(controller, :before, :initialize_session)
+    filter_exists?(controller, :after, :conditional_track_event)
   end
 
   description do
-    "responds to #track_event."
+    "have ActionTracker."
   end
 
   failure_message do |actual|
-    "expected that #{actual} responded to #track_event, but it didn't."
+    "expected that #{actual} to have ActionTracker, but it didn't."
   end
 
   failure_message_when_negated do |actual|
-    "expected that #{actual} would not respond to #track_event, but it did."
+    "expected that #{actual} not to have ActionTracker, but it did."
   end
+
+  private
+
+  def filter_exists?(controller, kind, filter)
+    controller.class
+      ._process_action_callbacks
+      .select {|f| f.kind == kind }
+      .map(&:filter).include? filter
+  end
+
 end
