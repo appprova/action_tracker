@@ -2,25 +2,36 @@
 var ActionTracker = function () {
 
   var storage,
+      options = {},
+      time_seed,
       callbacks = {};
 
   function constructor() {
     storage = new Storage();
+    time_seed = new TimeSeed();
   }
 
   function setCallbacks(callbacksObj) {
     callbacks = callbacksObj;
   }
 
-  function start(list) {
+  function start(list, cfg_options) {
+    if(typeof cfg_options !== 'undefined') options = cfg_options;
     storage.queue(list);
   }
 
   function process() {
     while(typeof storage.getFirst() !== 'undefined') {
-      var tracker = new Tracker(storage.dequeue());
+      var tracker = new Tracker(storage.dequeue(), trackerOptions());
       tracker.send();
     }
+  }
+
+  function trackerOptions() {
+    var tracker_options = {};
+    tracker_options['timestamp'] = (typeof options.timestamp !== 'undefined') ? options.timestamp : false
+    if(tracker_options.timestamp) tracker_options['seed'] = time_seed;
+    return tracker_options;
   }
 
   function Storage() {
@@ -67,12 +78,15 @@ var ActionTracker = function () {
     this.constructor();
   };
 
-  function Tracker(tracker_data) {
+  function Tracker(tracker_data, cfg_options) {
 
     this.userFlag = false;
     this.dataFlag = false;
     this.user = null;
     this.data = null;
+    this.options = null;
+
+    if(typeof cfg_options !== 'undefined') this.options = cfg_options;
 
     if(typeof tracker_data !== 'undefined') {
       if(typeof tracker_data.identify !== 'undefined') {
@@ -82,6 +96,8 @@ var ActionTracker = function () {
       if(typeof tracker_data.track !== 'undefined') {
         this.dataFlag = true;
         this.data = tracker_data.track;
+        if(this.options.timestamp)
+          this.data['created_at'] = this.options.seed.getTimeSeed();
       }
     }
 
@@ -97,6 +113,15 @@ var ActionTracker = function () {
 
     this.getData = function() {
       return this.data;
+    };
+  };
+
+  function TimeSeed() {
+    this.seed_date = new Date();
+
+    this.getTimeSeed = function() {
+      this.seed_date.setSeconds(this.seed_date.getSeconds() + 1);
+      return this.seed_date;
     };
   };
 
