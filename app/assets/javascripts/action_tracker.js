@@ -3,6 +3,7 @@ var ActionTracker = function () {
 
   var storage,
       time_seed,
+      options = {},
       callbacks = {};
 
   function constructor() {
@@ -14,15 +15,22 @@ var ActionTracker = function () {
     callbacks = callbacksObj;
   }
 
-  function start(list) {
+  function start(list, cfg_options) {
+    if(typeof cfg_options !== 'undefined') options = cfg_options;
     storage.queue(list);
   }
 
   function process() {
     while(typeof storage.getFirst() !== 'undefined') {
-      var tracker = new Tracker(storage.dequeue());
+      var tracker = new Tracker(storage.dequeue(), trackerOptions());
       tracker.addTimestamp(time_seed).send();
     }
+  }
+
+  function trackerOptions() {
+    return {
+      timestamp: (typeof options.timestamp !== 'undefined') ? options.timestamp : true
+    };
   }
 
   function Storage() {
@@ -69,12 +77,13 @@ var ActionTracker = function () {
     this.constructor();
   };
 
-  function Tracker(tracker_data) {
+  function Tracker(tracker_data, cfg_options) {
 
     this.userFlag = false;
     this.dataFlag = false;
     this.user = null;
     this.data = null;
+    this.options = null;
 
     if(typeof tracker_data !== 'undefined') {
       if(typeof tracker_data.identify !== 'undefined') {
@@ -87,8 +96,12 @@ var ActionTracker = function () {
       }
     }
 
+    if(typeof cfg_options !== 'undefined') this.options = cfg_options;
+
     this.addTimestamp = function(seed) {
-      this.data['created_at'] = seed.getTimeSeed();
+      if(this.options.timestamp)
+        this.data['created_at'] = seed.getTimeSeed();
+      console.log(this.data);
       return this;
     }
 
