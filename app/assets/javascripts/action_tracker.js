@@ -82,8 +82,10 @@ var ActionTracker = function () {
 
     this.userFlag = false;
     this.dataFlag = false;
+    this.logoutFlag = false;
     this.user = null;
     this.data = null;
+
     this.options = null;
 
     if(typeof cfg_options !== 'undefined') this.options = cfg_options;
@@ -99,11 +101,15 @@ var ActionTracker = function () {
         if(this.options.timestamp)
           this.data['created_at'] = this.options.seed.getTimeSeed();
       }
+      if(tracker_data.logout) {
+        this.logoutFlag = true;
+      }
     }
 
     this.send = function() {
       if(this.userFlag) callbacks.identify(this.user.getData());
       if(this.dataFlag) callbacks.track(this.data);
+      if(this.logoutFlag) callbacks.logout();
     };
   };
 
