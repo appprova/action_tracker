@@ -2,10 +2,12 @@
 var ActionTracker = function () {
 
   var storage,
+      time_seed,
       callbacks = {};
 
   function constructor() {
     storage = new Storage();
+    time_seed = new TimeSeed();
   }
 
   function setCallbacks(callbacksObj) {
@@ -19,7 +21,7 @@ var ActionTracker = function () {
   function process() {
     while(typeof storage.getFirst() !== 'undefined') {
       var tracker = new Tracker(storage.dequeue());
-      tracker.send();
+      tracker.addTimestamp(time_seed).send();
     }
   }
 
@@ -85,6 +87,11 @@ var ActionTracker = function () {
       }
     }
 
+    this.addTimestamp = function(seed) {
+      this.data['created_at'] = seed.getTimeSeed();
+      return this;
+    }
+
     this.send = function() {
       if(this.userFlag) callbacks.identify(this.user.getData());
       if(this.dataFlag) callbacks.track(this.data);
@@ -97,6 +104,15 @@ var ActionTracker = function () {
 
     this.getData = function() {
       return this.data;
+    };
+  };
+
+  function TimeSeed() {
+    this.seed_date = new Date();
+
+    this.getTimeSeed = function() {
+      this.seed_date.setSeconds(this.seed_date.getSeconds() + 1);
+      return this.seed_date;
     };
   };
 
