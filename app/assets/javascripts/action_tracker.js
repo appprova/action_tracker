@@ -108,15 +108,7 @@ var ActionTracker = function () {
 
     this.send = function() {
       if(this.userFlag) callbacks.identify(this.user.getData());
-      if(logoutFlag) {
-        callbacks.identifyFinish(function() {
-          if(dataFlag) callbacks.track(data, function() {
-            if(logoutFlag) callbacks.logout();
-          });
-        });
-      } else {
-        if(dataFlag) callbacks.track(data);
-      }
+      if(dataFlag) callbacks.track(data, function() { if(logoutFlag) callbacks.logout(); } );
     };
   };
 
