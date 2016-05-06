@@ -81,12 +81,12 @@ var ActionTracker = function () {
   function Tracker(tracker_data, cfg_options) {
 
     this.userFlag = false;
-    this.dataFlag = false;
-    this.logoutFlag = false;
     this.user = null;
-    this.data = null;
-
     this.options = null;
+
+    var data = null;
+    var dataFlag = false;
+    var logoutFlag = false;
 
     if(typeof cfg_options !== 'undefined') this.options = cfg_options;
 
@@ -96,20 +96,27 @@ var ActionTracker = function () {
         this.user = new User(tracker_data.identify);
       }
       if(typeof tracker_data.track !== 'undefined') {
-        this.dataFlag = true;
-        this.data = tracker_data.track;
+        dataFlag = true;
+        data = tracker_data.track;
         if(this.options.timestamp)
-          this.data['created_at'] = this.options.seed.getTimeSeed();
+          data['created_at'] = this.options.seed.getTimeSeed();
       }
       if(tracker_data.logout) {
-        this.logoutFlag = true;
+        logoutFlag = true;
       }
     }
 
     this.send = function() {
       if(this.userFlag) callbacks.identify(this.user.getData());
-      if(this.dataFlag) callbacks.track(this.data);
-      if(this.logoutFlag) callbacks.logout();
+      if(logoutFlag) {
+        callbacks.identifyFinish(function() {
+          if(dataFlag) callbacks.track(data, function() {
+            if(logoutFlag) callbacks.logout();
+          });
+        });
+      } else {
+        if(dataFlag) callbacks.track(data);
+      }
     };
   };
 
@@ -144,3 +151,4 @@ var ActionTracker = function () {
 
   return public;
 }();
+
