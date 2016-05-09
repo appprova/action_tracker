@@ -17,9 +17,9 @@ var ActionTracker = function () {
     callbacks = callbacksObj;
   }
 
-  function start(list, cfg_options) {
-    if(typeof cfg_options !== 'undefined') {
-      options = cfg_options;
+  function start(list, cfgOptions) {
+    if(typeof cfgOptions !== 'undefined') {
+      options = cfgOptions;
     }
     storage.queue(list);
   }
@@ -33,12 +33,12 @@ var ActionTracker = function () {
   }
 
   function trackerOptions() {
-    var tracker_options = {};
-    tracker_options.timestamp = (typeof options.timestamp !== 'undefined') ? options.timestamp : false;
-    if(tracker_options.timestamp) {
-      tracker_options.seed = time_seed;
+    var trackerOptions = {};
+    trackerOptions.timestamp = (typeof options.timestamp !== 'undefined') ? options.timestamp : false;
+    if(trackerOptions.timestamp) {
+      trackerOptions.seed = time_seed;
     }
-    return tracker_options;
+    return trackerOptions;
   }
 
   function Storage() {
@@ -88,7 +88,7 @@ var ActionTracker = function () {
     this.constructor();
   }
 
-  function Tracker(trackerData, cfg_options) {
+  function Tracker(trackerData, cfgOptions) {
 
     this.userFlag = false;
     this.user = null;
@@ -98,8 +98,8 @@ var ActionTracker = function () {
     var dataFlag = false;
     var logoutFlag = false;
 
-    if(typeof cfg_options !== 'undefined') {
-      this.options = cfg_options;
+    if(typeof cfgOptions !== 'undefined') {
+      this.options = cfgOptions;
     }
 
     if(typeof trackerData !== 'undefined') {
@@ -133,8 +133,8 @@ var ActionTracker = function () {
     };
   }
 
-  function User(user_data) {
-    this.data = user_data;
+  function User(userData) {
+    this.data = userData;
     this.data.id = callbacks.generateID(this.data.email);
 
     this.getData = function() {
