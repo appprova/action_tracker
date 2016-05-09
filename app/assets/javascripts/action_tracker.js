@@ -4,13 +4,13 @@ var ActionTracker = function () {
   'use strict';
 
   var storage,
+      timeSeed,
       options = {},
-      time_seed,
       callbacks = {};
 
   function constructor() {
     storage = new Storage();
-    time_seed = new TimeSeed();
+    timeSeed = new TimeSeed();
   }
 
   function setCallbacks(callbacksObj) {
@@ -33,12 +33,12 @@ var ActionTracker = function () {
   }
 
   function trackerOptions() {
-    var trackerOptions = {};
-    trackerOptions.timestamp = (typeof options.timestamp !== 'undefined') ? options.timestamp : false;
-    if(trackerOptions.timestamp) {
-      trackerOptions.seed = time_seed;
+    var trackerParams = {};
+    trackerParams.timestamp = (typeof options.timestamp !== 'undefined') ? options.timestamp : false;
+    if(trackerParams.timestamp) {
+      trackerParams.seed = timeSeed;
     }
-    return trackerOptions;
+    return trackerParams;
   }
 
   function Storage() {
