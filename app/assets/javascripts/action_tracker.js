@@ -1,26 +1,44 @@
 
 var ActionTracker = function () {
 
+  'use strict';
+
   var storage,
+      timeSeed,
+      options = {},
       callbacks = {};
 
   function constructor() {
     storage = new Storage();
+    timeSeed = new TimeSeed();
   }
 
   function setCallbacks(callbacksObj) {
     callbacks = callbacksObj;
   }
 
-  function start(list) {
+  function start(list, cfgOptions) {
+    if(typeof cfgOptions !== 'undefined') {
+      options = cfgOptions;
+    }
     storage.queue(list);
   }
 
   function process() {
+    var tracker;
     while(typeof storage.getFirst() !== 'undefined') {
-      var tracker = new Tracker(storage.dequeue());
+      tracker = new Tracker(storage.dequeue(), trackerOptions());
       tracker.send();
     }
+  }
+
+  function trackerOptions() {
+    var trackerParams = {};
+    trackerParams.timestamp = (typeof options.timestamp !== 'undefined') ? options.timestamp : false;
+    if(trackerParams.timestamp) {
+      trackerParams.seed = timeSeed;
+    }
+    return trackerParams;
   }
 
   function Storage() {
@@ -28,10 +46,11 @@ var ActionTracker = function () {
     this.storage = [];
 
     this.constructor = function() {
-      if(sessionStorage.getItem('action_tracker_storage'))
+      if(sessionStorage.getItem('action_tracker_storage')) {
         this.getStorage();
-      else
+      } else {
         this.setStorage();
+      }
     };
 
     this.getStorage = function() {
@@ -45,8 +64,10 @@ var ActionTracker = function () {
     this.queue = function(list) {
       if(list != null) {
         this.getStorage();
-        for (var i =  0; i < list.length; i++)
+        var i;
+        for (i =  0; i < list.length; i += 1) {
           this.storage.push(list[i]);
+        }
         this.setStorage();
       }
     };
@@ -65,42 +86,74 @@ var ActionTracker = function () {
     };
 
     this.constructor();
-  };
+  }
 
-  function Tracker(tracker_data) {
+  function Tracker(trackerData, cfgOptions) {
 
     this.userFlag = false;
-    this.dataFlag = false;
     this.user = null;
-    this.data = null;
+    this.options = null;
 
-    if(typeof tracker_data !== 'undefined') {
-      if(typeof tracker_data.identify !== 'undefined') {
+    var data = null;
+    var dataFlag = false;
+    var logoutFlag = false;
+
+    if(typeof cfgOptions !== 'undefined') {
+      this.options = cfgOptions;
+    }
+
+    if(typeof trackerData !== 'undefined') {
+      if(typeof trackerData.identify !== 'undefined') {
         this.userFlag = true;
-        this.user = new User(tracker_data.identify);
+        this.user = new User(trackerData.identify);
       }
-      if(typeof tracker_data.track !== 'undefined') {
-        this.dataFlag = true;
-        this.data = tracker_data.track;
+      if(typeof trackerData.track !== 'undefined') {
+        dataFlag = true;
+        data = trackerData.track;
+        if(this.options.timestamp) {
+          data.created_at = this.options.seed.getTimeSeed();
+        }
+      }
+      if(trackerData.logout) {
+        logoutFlag = true;
       }
     }
 
     this.send = function() {
-      if(this.userFlag) callbacks.identify(this.user.getData());
-      if(this.dataFlag) callbacks.track(this.data);
+      if(this.userFlag) {
+        callbacks.identify(this.user.getData());
+      }
+      if(dataFlag) {
+        callbacks.track(data, function() {
+          if(logoutFlag) {
+            callbacks.logout();
+          }
+        });
+      }
     };
-  };
+  }
 
-  function User(user_data) {
-    this.data = user_data;
+  function User(userData) {
+    this.data = userData;
     this.data.id = callbacks.generateID(this.data.email);
 
     this.getData = function() {
       return this.data;
     };
-  };
+  }
 
-  var public = {
+  function TimeSeed() {
+    this.seed_date = new Date();
+
+    this.getTimeSeed = function() {
+      this.seed_date.setSeconds(this.seed_date.getSeconds() + 1);
+      return this.seed_date;
+    };
+  }
+
+  constructor();
+
+  return {
     Tracker: Tracker,
     User: User,
     Storage: Storage,
@@ -109,7 +162,4 @@ var ActionTracker = function () {
     callbacks: setCallbacks
   };
 
-  constructor();
-
-  return public;
 }();
