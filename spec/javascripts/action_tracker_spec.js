@@ -1,11 +1,13 @@
 
-describe("Action Tracker", function() {
+var ActionTracker = ActionTracker || {};
 
-  it("Base namespace exists", function() {
+describe('Action Tracker', function() {
+
+  it('Base namespace exists', function() {
     expect(typeof ActionTracker).toEqual('object');
   });
 
-  it("Base namespace exposes default object and operations", function() {
+  it('Base namespace exposes default object and operations', function() {
     expect(typeof ActionTracker.Tracker).toEqual('function');
     expect(typeof ActionTracker.User).toEqual('function');
     expect(typeof ActionTracker.Storage).toEqual('function');

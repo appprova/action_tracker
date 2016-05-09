@@ -64,6 +64,7 @@ var ActionTracker = function () {
     this.queue = function(list) {
       if(list != null) {
         this.getStorage();
+        var i;
         for (i =  0; i < list.length; i += 1) {
           this.storage.push(list[i]);
         }
@@ -87,7 +88,7 @@ var ActionTracker = function () {
     this.constructor();
   }
 
-  function Tracker(tracker_data, cfg_options) {
+  function Tracker(trackerData, cfg_options) {
 
     this.userFlag = false;
     this.user = null;
@@ -101,19 +102,19 @@ var ActionTracker = function () {
       this.options = cfg_options;
     }
 
-    if(typeof tracker_data !== 'undefined') {
-      if(typeof tracker_data.identify !== 'undefined') {
+    if(typeof trackerData !== 'undefined') {
+      if(typeof trackerData.identify !== 'undefined') {
         this.userFlag = true;
-        this.user = new User(tracker_data.identify);
+        this.user = new User(trackerData.identify);
       }
-      if(typeof tracker_data.track !== 'undefined') {
+      if(typeof trackerData.track !== 'undefined') {
         dataFlag = true;
-        data = tracker_data.track;
+        data = trackerData.track;
         if(this.options.timestamp) {
           data.created_at = this.options.seed.getTimeSeed();
         }
       }
-      if(tracker_data.logout) {
+      if(trackerData.logout) {
         logoutFlag = true;
       }
     }
