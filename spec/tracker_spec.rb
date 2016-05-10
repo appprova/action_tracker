@@ -47,7 +47,7 @@ describe ActionTracker::Concerns::Tracker do
 
   context 'when the resource does not exists' do
     before(:each) do
-      allow_any_instance_of(described_class).to receive(:resource).and_return(Object.new)
+      allow_any_instance_of(described_class).to receive(:resource).and_return(nil)
     end
 
     it 'returns a nil track' do
