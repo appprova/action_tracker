@@ -8,6 +8,7 @@ describe ActionTracker::Concerns::Tracker do
     @fake_session = {}
 
     allow_any_instance_of(ApplicationTestController).to receive(:session).and_return(@fake_session)
+    allow_any_instance_of(described_class).to receive(:resource).and_return(Object.new)
     @helper = Object.new.extend ActionTracker::Helpers::Render
   end
 
@@ -42,6 +43,16 @@ describe ActionTracker::Concerns::Tracker do
     expect(@fake_session[:action_tracker]).to be_nil
     expect(result.size).to eq(2)
     expect(result).to match(['Here comes the test', action: 'Here comes the object test'])
+  end
+
+  context 'when the resource does not exists' do
+    before(:each) do
+      allow_any_instance_of(described_class).to receive(:resource).and_return(nil)
+    end
+
+    it 'returns a nil track' do
+      expect(@fake_session[:action_tracker]).to be_nil
+    end
   end
 
   def trigger_trackers(event_list)
