@@ -53,7 +53,7 @@ module ActionTracker
       def find_resource
         @resource_method ||= Devise.mappings.keys.map { |resource| "current_#{resource}" }
                                    .select { |method_name| !method(method_name).call.nil? }
-                                   .first
+                                   .first || 'nil_current_resource'
       rescue NameError
         nil
       end
@@ -74,6 +74,10 @@ module ActionTracker
 
       def namespace
         self.class.name.deconstantize.try(:+, '::')
+      end
+
+      def nil_current_resource
+        NilResource.new
       end
     end
   end
