@@ -65,7 +65,7 @@ module ActionTracker
       end
 
       def tracker_params
-        @tracker_params ||= tracker_exists? && resource.present? ? tracker_instance.method(action_name).call : nil
+        @tracker_params ||= tracker_exists? ? tracker_instance.method(action_name).call : nil
       end
 
       def tracker_exists?
