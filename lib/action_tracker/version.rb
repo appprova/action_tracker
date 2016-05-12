@@ -1,3 +1,3 @@
 module ActionTracker
-  VERSION = '0.1.6.2'.freeze
+  VERSION = '0.1.6.3'.freeze
 end
