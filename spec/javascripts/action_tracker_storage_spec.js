@@ -7,6 +7,7 @@ describe('Action Tracker Storage', function() {
 
   beforeEach(function() {
     storage = new ActionTracker.Storage();
+    storage.clear();
   });
 
   it('initializes empty', function() {
@@ -28,7 +29,7 @@ describe('Action Tracker Storage', function() {
     expect(storage.dequeue()).toEqual('foo');
     expect(storage.getFirst()).toEqual('bar');
     expect(storage.dequeue()).toEqual('bar');
-    
+
     expect(storage.storage).toEqual([]);
   });
 
@@ -42,7 +43,7 @@ describe('Action Tracker Storage', function() {
     expect(newStorage.dequeue()).toEqual('foo');
     expect(newStorage.getFirst()).toEqual('bar');
     expect(newStorage.dequeue()).toEqual('bar');
-    
+
     storage.getStorage();
 
     expect(storage.storage).toEqual([]);

@@ -85,6 +85,11 @@ var ActionTracker = function () {
       return this.storage[0];
     };
 
+    this.clear = function() {
+      this.storage = [];
+      this.setStorage();
+    }
+
     this.constructor();
   }
 
