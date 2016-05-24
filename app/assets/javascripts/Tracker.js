@@ -15,7 +15,7 @@ var ActionTracker = (function(self) {
     if(typeof trackerData !== 'undefined') {
       if(typeof trackerData.identify !== 'undefined') {
         userFlag = true;
-        user = new self.User(trackerData.identify);
+        user = new self.User(trackerData.identify, callbacks);
       }
       if(typeof trackerData.track !== 'undefined') {
         dataFlag = true;
