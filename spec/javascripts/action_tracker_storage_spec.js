@@ -6,19 +6,20 @@ describe('Action Tracker Storage', function() {
   var storage;
 
   beforeEach(function() {
+    var store = {};
     storage = new ActionTracker.Storage();
     storage.clear();
   });
 
   it('initializes empty', function() {
     expect(typeof storage.getFirst()).toEqual('undefined');
-    expect(storage.storage).toEqual([]);
+    expect(storage.getStorage()).toEqual([]);
   });
 
   it('add item to storage', function() {
     storage.queue(['foo']);
     storage.queue(['bar']);
-    expect(storage.storage).toEqual(['foo', 'bar']);
+    expect(storage.getStorage()).toEqual(['foo', 'bar']);
   });
 
   it('get item from storage', function() {
@@ -30,7 +31,7 @@ describe('Action Tracker Storage', function() {
     expect(storage.getFirst()).toEqual('bar');
     expect(storage.dequeue()).toEqual('bar');
 
-    expect(storage.storage).toEqual([]);
+    expect(storage.getStorage()).toEqual([]);
   });
 
   it('shares same index in session storage', function() {
@@ -44,10 +45,10 @@ describe('Action Tracker Storage', function() {
     expect(newStorage.getFirst()).toEqual('bar');
     expect(newStorage.dequeue()).toEqual('bar');
 
-    storage.getStorage();
+    storage.refreshStorage();
 
-    expect(storage.storage).toEqual([]);
-    expect(newStorage.storage).toEqual([]);
+    expect(storage.getStorage()).toEqual([]);
+    expect(newStorage.getStorage()).toEqual([]);
   });
 
 });
