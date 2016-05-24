@@ -3,6 +3,8 @@ var ActionTracker = ActionTracker || {};
 
 describe('Action Tracker Time Seed', function() {
 
+  var timeSeed;
+
   beforeEach(function() {
     timeSeed = new ActionTracker.TimeSeed();
   });
