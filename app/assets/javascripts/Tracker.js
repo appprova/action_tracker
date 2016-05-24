@@ -1,6 +1,6 @@
 var ActionTracker = (function(self) {
-  
-  self.Tracker = function() {
+
+  self.Tracker = function(trackerData, cfgOptions, callbacks) {
     var userFlag    = false,
         user        = null,
         options     = null,
@@ -9,19 +9,19 @@ var ActionTracker = (function(self) {
         logoutFlag  = false;
 
     if(typeof cfgOptions !== 'undefined') {
-      this.options = cfgOptions;
+      options = cfgOptions;
     }
 
     if(typeof trackerData !== 'undefined') {
       if(typeof trackerData.identify !== 'undefined') {
-        this.userFlag = true;
-        this.user = new User(trackerData.identify);
+        userFlag = true;
+        user = new self.User(trackerData.identify);
       }
       if(typeof trackerData.track !== 'undefined') {
         dataFlag = true;
         data = trackerData.track;
-        if(this.options.timestamp) {
-          data.created_at = this.options.seed.getTimeSeed();
+        if(options.timestamp) {
+          data.created_at = options.seed.getTimeSeed();
         }
       }
       if(trackerData.logout) {
@@ -30,8 +30,8 @@ var ActionTracker = (function(self) {
     }
 
     function send() {
-      if(this.userFlag) {
-        callbacks.identify(this.user.getData());
+      if(userFlag) {
+        callbacks.identify(user.getData());
       }
       if(dataFlag) {
         callbacks.track(data, function() {

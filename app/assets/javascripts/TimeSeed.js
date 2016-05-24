@@ -3,7 +3,7 @@ var ActionTracker = (function(self) {
     var seed_date = new Date();
 
     function getTimeSeed() {
-      this.seed_date.setSeconds(seed_date.getSeconds() + 1);
+      seed_date.setSeconds(seed_date.getSeconds() + 1);
       return seed_date;
     };
 

@@ -6,7 +6,6 @@ describe('Action Tracker Storage', function() {
   var storage;
 
   beforeEach(function() {
-    var store = {};
     storage = new ActionTracker.Storage();
     storage.clear();
   });

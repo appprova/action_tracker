@@ -12,22 +12,22 @@ var ActionTracker = (function(self) {
 
   self.callbacks = function(callbacksObj) {
     callbacks = callbacksObj;
-  }
+  };
 
   self.new = function(list, cfgOptions) {
     if(typeof cfgOptions !== 'undefined') {
       options = cfgOptions;
     }
     storage.queue(list);
-  }
+  };
 
   self.push = function() {
     var tracker;
     while(typeof storage.getFirst() !== 'undefined') {
-      tracker = new Tracker(storage.dequeue(), trackerOptions());
+      tracker = new self.Tracker(storage.dequeue(), trackerOptions(), callbacks);
       tracker.send();
     }
-  }
+  };
 
   function constructor() {
     storage = new self.Storage();
