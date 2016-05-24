@@ -1,5 +1,5 @@
 var ActionTracker = (function(self) {
-  
+
   self.Storage = function() {
     var storage = [];
 
@@ -20,7 +20,7 @@ var ActionTracker = (function(self) {
     }
 
     function queue(list) {
-      if(list != null) {
+      if(list !== null) {
         getStorage();
         var i;
         for (i =  0; i < list.length; i += 1) {
@@ -61,7 +61,7 @@ var ActionTracker = (function(self) {
       getFirst: getFirst,
       refreshStorage: getStorage,
       clear: clear,
-    }
+    };
   };
 
   return self;

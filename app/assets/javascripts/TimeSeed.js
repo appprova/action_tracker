@@ -1,15 +1,15 @@
 var ActionTracker = (function(self) {
   self.TimeSeed = function() {
-    var seed_date = new Date();
+    var seedDate = new Date();
 
     function getTimeSeed() {
-      seed_date.setSeconds(seed_date.getSeconds() + 1);
-      return seed_date;
-    };
+      seedDate.setSeconds(seedDate.getSeconds() + 1);
+      return seedDate;
+    }
 
     return {
       getTimeSeed: getTimeSeed
-    }
+    };
   };
 
   return self;

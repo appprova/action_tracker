@@ -44,7 +44,7 @@ var ActionTracker = (function(self) {
 
     return {
       send: send
-    }
+    };
   };
 
   return self;

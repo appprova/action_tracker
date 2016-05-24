@@ -10,7 +10,7 @@ var ActionTracker = (function(self) {
 
     return {
       getData: getData
-    }
+    };
   };
 
   return self;
