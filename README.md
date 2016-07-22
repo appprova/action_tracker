@@ -77,7 +77,7 @@ end
 #### Options
 
 | Name | Description | Default |
-|--|--|--|--|
+|---|---|---|
 |*name*| The name of the tracked event.  | The controller action name. Eg.: 'users#index'|
 
 ## Development
