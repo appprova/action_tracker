@@ -3,7 +3,7 @@ require 'spec_helper'
 include ActionTracker::Helpers::Render
 
 describe ActionTracker::Concerns::Tracker do
-  before(:each) do
+  before do
     @event_list = []
     @fake_session = {}
 
@@ -46,7 +46,7 @@ describe ActionTracker::Concerns::Tracker do
   end
 
   context 'when the resource does not exists' do
-    before(:each) do
+    before do
       allow_any_instance_of(described_class).to receive(:find_resource).and_return('nil_current_resource')
     end
 
