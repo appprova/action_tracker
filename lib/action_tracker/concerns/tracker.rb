@@ -8,8 +8,8 @@ module ActionTracker
 
       included do
         helper ActionTracker::Helpers::Render
-        before_filter :initialize_session
-        after_filter :conditional_track_event
+        before_action :initialize_session
+        after_action :conditional_track_event
       end
 
       def render(*args)
