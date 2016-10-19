@@ -59,9 +59,8 @@ module ActionTracker
       end
 
       def tracker_instance
-        @tracker_instance ||= Object.const_get(tracker_klass, false).new(resource, self)
-      rescue NameError
-        nil
+        return unless Object.const_defined?(tracker_klass)
+        @tracker_instance ||= Object.const_get(tracker_klass).new(resource, self)
       end
 
       def tracker_params
