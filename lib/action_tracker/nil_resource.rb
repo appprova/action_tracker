@@ -17,6 +17,10 @@ module ActionTracker
       []
     end
 
+    def to_h
+      {}
+    end
+
     def to_str
       to_s
     end
@@ -27,6 +31,10 @@ module ActionTracker
 
     def to_i
       0
+    end
+
+    def to_hash
+      to_h
     end
 
     def present?
