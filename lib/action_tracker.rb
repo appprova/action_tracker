@@ -9,6 +9,8 @@ require 'action_tracker/configuration'
 module ActionTracker
   if defined?(Rails)
     require 'action_tracker/engine'
-    ActiveSupport.on_load(:action_controller) { ::ActionController::Base.include ActionTracker::Concerns::Tracker }
+    ActiveSupport.on_load(:action_controller) do
+      ::ActionController::Base.include ActionTracker::Concerns::Tracker
+    end
   end
 end
