@@ -31,7 +31,8 @@ module ActionTracker
       def track_event
         return unless ActionTracker.configuration.track_events
         session[:action_tracker] ||= []
-        session[:action_tracker] << tracker_params unless tracker_params.blank?
+        local_params = tracker_params
+        session[:action_tracker] << local_params unless local_params.blank?
       end
 
       def digest
