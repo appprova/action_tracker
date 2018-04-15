@@ -7,7 +7,7 @@ module ActionTracker
       extend ::ActiveSupport::Concern
 
       included do
-        helper ActionTracker::Helpers::Render
+        ::ActionController::Base.send(:include, ActionTracker::Helpers::Render)
         before_action :initialize_session
         after_action :conditional_track_event
       end
