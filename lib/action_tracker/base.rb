@@ -1,19 +1,20 @@
 module ActionTracker
   # nodoc
   class Base
-    attr_reader :kontroller, :resource
+    attr_reader :controller, :resource
+    alias_method :kontroller, :controller
 
-    def initialize(resource, kontroller)
+    def initialize(resource, controller)
       @resource = resource
-      @kontroller = kontroller
-      init_instance_variables if kontroller
+      @controller = controller
+      init_instance_variables if controller
     end
 
     private
 
     def init_instance_variables
-      kontroller.instance_variables.each do |instance_var|
-        instance_variable_set(instance_var, kontroller.instance_variable_get(instance_var))
+      controller.instance_variables.each do |instance_var|
+        instance_variable_set(instance_var, controller.instance_variable_get(instance_var))
       end
     end
   end
